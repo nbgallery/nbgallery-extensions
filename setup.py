@@ -18,12 +18,12 @@
 from setuptools import setup
 
 setup(
-    name='nbgallery-extensions',
+    name='jupyter-nbgallery',
     version='0.1',
     description='Jupyter extensions to add nbgallery integration',
     url='https://github.com/nbgallery/nbgallery-extensions',
     author='Ryan Festag',
     author_email='rfestag@gmail.com',
     license='MIT',
-    packages=['nbgallery-extensions'],
+    packages=['jupyter_nbgallery'],
 )
