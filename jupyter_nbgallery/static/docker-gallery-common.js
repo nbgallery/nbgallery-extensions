@@ -1,15 +1,13 @@
 define(function() {
   var load_ipython_extension = function() {
-    require(['/Jupyter/nbextensions/jquery-cookie.js'], function() {
-      if ($.cookie("nb.gallery.url") == null) {
-        var base = "";
-      } else {
-        var base = $.cookie("nb.gallery.url");
-        console.log("loading gallery-common integration from " + base);
+    require(['../nbextensions/jupyter-nbgallery/jquery.cookie.js'], function() {
+      var base = $.cookie("nb.gallery.url")
+      if (base == null) {
+        base = "http://localhost:3000";
       }
-
+      console.log("loading gallery-common integration from " + base);
       require([base + "/Jupyter/static/integration/gallery-common.js"]);
-    });
+    })
   };
 
   return {

@@ -2,8 +2,12 @@ from .post import Post
 from .status import Status
 
 def _jupyter_nbextension_paths():  # pragma: no cover
-    return [{ 
+    return [{
         'section': "notebook",
+        'src': "static",
+        'dest': 'jupyter-nbgallery',
+        'require': 'jupyter-nbgallery/jquery.cookie'},
+        {'section': "notebook",
         'src': "static",
         'dest': "jupyter-nbgallery",
         'require': 'jupyter-nbgallery/docker-gallery-common'}, 
