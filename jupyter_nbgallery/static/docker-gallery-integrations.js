@@ -25,8 +25,15 @@ define(function() {
   };
   var load_extensions = function(base) {
     update_gallery_url(base)
-    require([base + "/Jupyter/static/integration/gallery-common.js"])
-    require([base + "/Jupyter/static/integration/gallery-tree.js"])
+    require(['../nbextensions/jupyter-nbgallery/bootbox.min.js'], function(bootbox) {
+      require([base + "/Jupyter/static/integration/gallery-common.js", base + "/Jupyter/static/integration/gallery-tree.js"], function(){
+        console.log("Successfully loaded gallery integration scripts from " + base)
+      }, function(error) {
+        update_gallery_url(null)
+        console.log("Failed to load gallery integration scripts from " + base)
+        bootbox.alert('Warning: Jupyter was unable to load nbGallery dependencies from the provided URL. Please verify it is correct and try again.')
+      })
+    })
     require(['base/js/events', "../nbextensions/jupyter-nbgallery/jquery.cookie.js"], function(events, cookies) {
       // for some reason, we miss the notebook_loaded event for large notebooks
       // so the kernel hook is our safety
@@ -38,21 +45,34 @@ define(function() {
     });
   }
 
-  var load_ipython_extension = function() {
-    //TODO- Read default gallery location from settings. If it doesn't exist, then prompt.
-    //TODO- Initialize Gallery menu item with "Set Gallery Location", 
-    require(['../nbextensions/jupyter-nbgallery/bootbox.min.js'], function(bootbox) {
-      base = get_gallery_url()
-      console.log(Jupyter.notebook.get_selected_cell().config)
-      console.log(base)
-      if (!base) {
+  var add_gallery_configuration_menu = function() {
+    var gallery_menu = $('#gallery_menu')
+    gallery_menu.empty()
+    gallery_menu.append('<a class="dropdown-toggle" data-toggle="dropdown">Gallery</a>')
+    var links = $('<li>')
+    links.append('<a href="#" id="set_gallery" >Set Gallery URL</a>')
+    gallery_menu.append($('<ul class="dropdown-menu">').append(links))
+    $('#set_gallery').click(function() {
+      require(['../nbextensions/jupyter-nbgallery/bootbox.min.js'], function(bootbox) {
         bootbox.prompt("Set Gallery Location", function(base) {
           load_extensions(base)
         })
-      } else {
-        load_extensions(base)
-      }
+        var bootbox_input = $('input.bootbox-input')
+        console.log(bootbox_input)
+        Jupyter.keyboard_manager.register_events(bootbox_input)
+      })
     })
+  }
+  var load_ipython_extension = function() {
+    var gallery_menu = $('<li id="gallery_menu" class="dropdown">')
+    $('ul.nav.navbar-nav').append(gallery_menu);
+
+    base = get_gallery_url()
+    if (!base) {
+      add_gallery_configuration_menu()
+    } else {
+      load_extensions(base)
+    }
   };
 
   return {
