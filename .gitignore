@@ -1,3 +1,5 @@
 jupyter_nbgallery.egg-info
+jupyter-nbgallery-*
 *.pyc
 dist
+build

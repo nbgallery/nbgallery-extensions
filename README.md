@@ -3,7 +3,7 @@
 Install and enable _jupyter_nbgallery_ on your Jupyter server
 
 ```bash
-pip install jupyter_nbgallery --py
+pip install jupyter_nbgallery -U
 jupyter serverextension enable --py jupyter_nbgallery
 jupyter nbextension install --py jupyter_nbgallery
 jupyter nbextension enable jupyter_nbgallery --py 

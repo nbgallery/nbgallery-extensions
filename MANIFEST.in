@@ -1,1 +1,1 @@
-recursive-include nbgallery-extensions/static *
+recursive-include jupyter_nbgallery/static *
