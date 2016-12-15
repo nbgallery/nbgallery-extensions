@@ -1,5 +1,6 @@
 from .post import Post
 from .status import Status
+from notebook.utils import url_path_join
 
 def _jupyter_nbextension_paths():  # pragma: no cover
     return [{
