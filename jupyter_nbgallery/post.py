@@ -10,8 +10,11 @@ from notebook.services.contents.handlers import ContentsHandler
 
 class Post(IPythonHandler):
   def post(self):
-    notebook = unquote(self.request.path[14:]);
-
+    to_find = "post/"
+    idx_after_to_find = self.request.path.find(to_find)+len(to_find)
+    notebook = "/".join(self.request.path[idx_after_to_find:].split("/"))
+    notebook = unquote(notebook) 
+ 
     self.request.method = 'PUT';
     self.request.path = '/api/contents/' + notebook;
 
