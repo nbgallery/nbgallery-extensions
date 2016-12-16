@@ -3,7 +3,7 @@ define(function() {
     require(['../nbextensions/jupyter-nbgallery/jquery.cookie.js'], function() {
       var base = $.cookie("nb.gallery.url")
       if (base == null) {
-        base = "http://localhost:3000";
+        base = "https://nb.gallery/";
       }
       console.log("loading gallery-common integration from " + base);
       require([base + "/Jupyter/static/integration/gallery-common.js"]);
