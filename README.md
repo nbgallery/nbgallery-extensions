@@ -20,3 +20,6 @@ jupyter nbextension install --py jupyter_nbgallery
 jupyter nbextension enable jupyter_nbgallery --py 
 ```
 
+# Deploying
+
+A good walkthrough for deploying to PyPi can be found here: http://peterdowns.com/posts/first-time-with-pypi.html
