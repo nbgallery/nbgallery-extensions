@@ -3,23 +3,23 @@ from .status import Status
 from notebook.utils import url_path_join
 
 def _jupyter_nbextension_paths():  # pragma: no cover
-    return [{
+    return [
+      {
         'section': "notebook",
         'src': "static",
         'dest': "jupyter-nbgallery",
-        'require': 'jupyter-nbgallery/bootbox.min'}, 
-        {'section': "notebook",
+        'require': 'jupyter-nbgallery/docker-gallery-notebook'
+      },{
+        'section': "tree",
         'src': "static",
         'dest': "jupyter-nbgallery",
-        'require': 'jupyter-nbgallery/jquery.cookie'}, 
-        {'section': "notebook",
+        'require': 'jupyter-nbgallery/docker-gallery-tree'
+      },{
+        'section': "common",
         'src': "static",
         'dest': "jupyter-nbgallery",
-        'require': 'jupyter-nbgallery/docker-gallery-integrations'}, 
-        {'section': "notebook",
-        'src': "static",
-        'dest': "jupyter-nbgallery",
-        'require': 'jupyter-nbgallery/docker-screenKeys'}
+        'require': 'jupyter-nbgallery/docker-gallery-common'
+      },
     ]
 
 

@@ -1,12 +1,17 @@
 define(function() {
   var load_ipython_extension = function() {
-    require(['../nbextensions/jupyter-nbgallery/jquery.cookie.js'], function() {
-      var base = $.cookie("nb.gallery.url")
-      if (base == null) {
-        var base = "https://nb.gallery/";
+    require(['base/js/utils','services/config'], function(utils,configmod) {        
+      var config = new configmod.ConfigSection('common',{base_url: utils.get_body_data("baseUrl")});
+      config.load();
+
+      if (config['data'].nbgallery != undefined) {
+        base = config['data'].nbgallery.url;
+      } else {
+        base = "https://nb.gallery/";
       }
+
       console.log("loading gallery-tree integration from " + base);
-      require([base + "/Jupyter/static/integration/gallery-tree.js"]);
+      require([base + "/integration/gallery-tree.js"]);
     });
   };
 
