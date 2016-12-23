@@ -1,11 +1,18 @@
 import os
+import subprocess
 
 from notebook.utils import url_path_join
 from notebook.base.handlers import IPythonHandler
 
 class Status(IPythonHandler):
   def get(self):
-    self.finish(os.environ['NBGALLERY_CLIENT_VERSION']);
+    version = os.environ.get('NBGALLERY_CLIENT_VERSION', '')
+    if not version:
+      try:
+        version = subprocess.check_output(['jupyter', '--version']).strip().decode('utf-8')
+      except:
+        version = ''
+    self.finish(version);
 
 def load_jupyter_server_extension(app):
   web_app = app.web_app
