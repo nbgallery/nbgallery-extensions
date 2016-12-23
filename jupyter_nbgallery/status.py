@@ -5,8 +5,7 @@ from notebook.base.handlers import IPythonHandler
 
 class Status(IPythonHandler):
   def get(self):
-    # TODO 
-    self.finish(os.environ['']);
+    self.finish(os.environ['NBGALLERY_CLIENT_VERSION']);
 
 def load_jupyter_server_extension(app):
   web_app = app.web_app
