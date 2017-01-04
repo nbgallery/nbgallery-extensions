@@ -7,20 +7,18 @@ define(function() {
         gallery_notebook_loaded = true;
         
         var config = new configmod.ConfigSection('common',{base_url: utils.get_body_data("baseUrl")});
-        config.load();
-
-        if (config['data'].nbgallery != undefined) {
+        
+        config.loaded.then(function() {
           base = config['data'].nbgallery.url;
-        } else {
-          base = "https://nb.gallery/";
-        }
+          console.log("loading gallery-notebook integration from " + base);
 
-        console.log("loading gallery-notebook integration from " + base);
-
-        require([base + "/integration/gallery-notebook.js"], function() {
-          Jupyter.notification_area.get_widget("notebook").set_message("Gallery Integration Loaded", 1000);
-        });
-      }
+          require([base + "/integration/gallery-notebook.js"], function() {
+            Jupyter.notification_area.get_widget("notebook").set_message("Gallery Integration Loaded", 1000);
+          });
+        );
+        
+        config.load();
+      });
     })
   };
 
