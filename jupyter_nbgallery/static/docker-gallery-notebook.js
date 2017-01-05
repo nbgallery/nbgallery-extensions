@@ -7,6 +7,7 @@ define(function() {
         gallery_notebook_loaded = true;
         
         var config = new configmod.ConfigSection('common',{base_url: utils.get_body_data("baseUrl")});
+        config.load();
         
         config.loaded.then(function() {
           base = config['data'].nbgallery.url;
@@ -15,9 +16,7 @@ define(function() {
           require([base + "/integration/gallery-notebook.js"], function() {
             Jupyter.notification_area.get_widget("notebook").set_message("Gallery Integration Loaded", 1000);
           });
-        );
-        
-        config.load();
+        });
       });
     })
   };
