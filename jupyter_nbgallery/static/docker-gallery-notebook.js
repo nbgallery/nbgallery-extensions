@@ -17,7 +17,7 @@ define(function() {
             Jupyter.notification_area.get_widget("notebook").set_message("Gallery Integration Loaded", 1000);
           });
         });
-      });
+      };
     })
   };
 
