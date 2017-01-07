@@ -18,7 +18,8 @@ def _jupyter_nbextension_paths():  # pragma: no cover
         'section': "common",
         'src': "static",
         'dest': "jupyter-nbgallery",
-        'require': 'jupyter-nbgallery/docker-gallery-common'
+        'require': 'jupyter-nbgallery/docker-gallery-common',
+        'require': 'jupyter-nbgallery/docker-screenKeys'
       },
     ]
 
