@@ -13,7 +13,7 @@ define(function() {
           base = config['data'].nbgallery.url;
           console.log("loading gallery-notebook integration from " + base);
 
-          require([base + "/integration/gallery-notebook"], function() {
+          require([base + "/integration/gallery-notebook.js"], function() {
             Jupyter.notification_area.get_widget("notebook").set_message("Gallery Integration Loaded", 1000);
           });
         });
