@@ -10,12 +10,23 @@ define(function() {
         config.load();
         
         config.loaded.then(function() {
-          base = config['data'].nbgallery.url;
+          var nbgallery = config['data'].nbgallery;
+          var base = nbgallery.url;
           console.log("loading gallery-notebook integration from " + base);
 
           require([base + "/integration/gallery-notebook"], function() {
             Jupyter.notification_area.get_widget("notebook").set_message("Gallery Integration Loaded", 1000);
           });
+
+          if (nbgallery.extra_integration != undefined) {
+            if (nbgallery.extra_integration.notebook != undefined) {
+              extras = nbgallery.extra_integration.notebook;
+              for (i in extras) {
+                console.log("loading extra notebook integration " + extras[i]);
+                require([base + "/integration/" + extras[i]]);
+              }
+            }
+          }
         });
       };
     })

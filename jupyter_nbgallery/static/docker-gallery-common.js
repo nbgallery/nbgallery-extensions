@@ -5,9 +5,19 @@ define(function() {
       config.load();
       
       config.loaded.then(function() {
-        base = config['data'].nbgallery.url;
+        var nbgallery = config['data'].nbgallery;
+        var base = nbgallery.url;
         console.log("loading gallery-common integration from " + base);
         require([base + "/integration/gallery-common.js"]);
+        if (nbgallery.extra_integration != undefined) {
+          if (nbgallery.extra_integration.common != undefined) {
+            extras = nbgallery.extra_integration.common;
+            for (i in extras) {
+              console.log("loading extra common integration " + extras[i]);
+              require([base + "/integration/" + extras[i]]);
+            }
+          }
+        }
       });
     })
   };
