@@ -13,7 +13,7 @@ jupyter nbextension enable jupyter_nbgallery --py
 Check out this repo on your Jupyter server, install from source, and enable it
 
 ```bash
-# cd into into the directory you checked out this project
+# cd into the directory you checked out this project
 pip install -e .
 jupyter serverextension enable --py jupyter_nbgallery
 jupyter nbextension install --py jupyter_nbgallery
