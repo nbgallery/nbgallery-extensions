@@ -1,4 +1,4 @@
-#Installation
+# Installation
 
 Install and enable _jupyter_nbgallery_ on your Jupyter server
 
