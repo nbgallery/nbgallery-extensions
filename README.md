@@ -1,3 +1,7 @@
+# Overview
+
+This Jupyter extension enables integration with [nbgallery](https://nbgallery.github.io).  More information is available [here](https://github.com/nbgallery/nbgallery/blob/master/docs/jupyter_integration.md) in the nbgallery github project.
+
 # Installation
 
 Install and enable _jupyter_nbgallery_ on your Jupyter server
@@ -22,4 +26,4 @@ jupyter nbextension enable jupyter_nbgallery --py
 
 # Deploying
 
-A good walkthrough for deploying to PyPi can be found here: http://peterdowns.com/posts/first-time-with-pypi.html
+A walkthrough for deploying to PyPi can be found here: https://packaging.python.org/tutorials/packaging-projects/
