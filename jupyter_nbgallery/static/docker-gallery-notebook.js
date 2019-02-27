@@ -57,8 +57,12 @@ define(function() {
 
   var load_ipython_extension = function() {
     require(['base/js/events'], function(events) {
-      // for some reason, we miss the notebook_loaded event for large notebooks
-      // so the kernel hook is our safety
+      // For some reason, we miss the notebook_loaded event for large notebooks
+      // so the kernel hook is our safety.
+      // If we already missed the event, call our load function explicitly.
+      if (Jupyter.notebook.kernel.is_connected()) {
+        load_gallery_notebook();
+      }
       events.on("kernel_ready.Kernel", load_gallery_notebook);
       events.on("notebook_loaded.Notebook", load_gallery_notebook);
     });
