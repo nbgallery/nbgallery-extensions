@@ -5,6 +5,7 @@ define(function() {
     require(['base/js/utils','services/config'], function(utils,configmod) {
       if (gallery_notebook_loaded == false) {
         gallery_notebook_loaded = true;
+        console.log('loading gallery notebook extension');
 
         // Load extensions hosted at nbgallery
         var cconfig = new configmod.ConfigSection('common',{base_url: utils.get_body_data("baseUrl")});
@@ -56,15 +57,11 @@ define(function() {
   };
 
   var load_ipython_extension = function() {
-    require(['base/js/events'], function(events) {
-      // For some reason, we miss the notebook_loaded event for large notebooks
-      // so the kernel hook is our safety.
-      // If we already missed the event, call our load function explicitly.
-      if (Jupyter.notebook.kernel.is_connected()) {
+    require(['base/js/promises'], function(promises) {
+      // Load our extension once the notebook has loaded
+      promises.notebook_loaded.then(function() {
         load_gallery_notebook();
-      }
-      events.on("kernel_ready.Kernel", load_gallery_notebook);
-      events.on("notebook_loaded.Notebook", load_gallery_notebook);
+      });
     });
   };
 
