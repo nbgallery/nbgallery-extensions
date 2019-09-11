@@ -1,0 +1,1 @@
+This extension adds convenience buttons to the active cell to perform common actions such as Run, New Cell, Delete, etc.  Easy Buttons can be disabled in the Preference menu added by the NBGallery Menu extension.

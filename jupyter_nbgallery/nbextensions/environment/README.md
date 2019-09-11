@@ -1,0 +1,1 @@
+When the tree page is first loaded, this extension will register the current Jupyter instance as an execution environment with nbgallery.  Preferences stored in nbgallery will also be downloaded and applied.

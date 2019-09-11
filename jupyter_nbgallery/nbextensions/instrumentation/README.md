@@ -1,0 +1,1 @@
+If the notebook has been launched/downloaded from nbgallery, this extension will report cell execution status (success/failure) to nbgallery.  This information is used for nbgallery's notebook health evaluation system.
