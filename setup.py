@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License along
 # with this program. If not, see <http://www.gnu.org/licenses/>.
 
-from setuptools import setup
+from setuptools import setup, find_packages
 
 # read the contents of your README file
 from os import path
@@ -25,7 +25,7 @@ with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='jupyter-nbgallery',
-    version='1.0.0',
+    version='1.0.1',
     description='Jupyter extensions to add nbgallery integration',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -33,6 +33,6 @@ setup(
     author='Ryan Festag',
     author_email='rfestag@gmail.com',
     license='MIT',
-    packages=['jupyter_nbgallery'],
+    packages=find_packages(),
     include_package_data=True
 )

@@ -1,2 +1,2 @@
 include README.md
-recursive-include jupyter_nbgallery/static *
+recursive-include jupyter_nbgallery/nbextensions *
