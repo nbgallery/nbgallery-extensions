@@ -59,4 +59,4 @@ Once the extension is installed, you will also need to modify your Jupyter confi
 
 ## Server Extensions
 
- * `post_hack` is an workaround for browser issues with CORS pre-flight checks when PKI certificates are involved.  The Jupyter API enables notebooks to be uploaded via a `PUT` to `/api/contents/NotebookName.ipynb`; this extension enables uploads via a `POST` to `/post/NotebookName.ipynb` as well.  The "Run in Jupyter" button in nbgallery uses the `/post` endpoint, so this extension must be enabled to launch notebooks from nbgallery.
+ * [`post_hack`](https://github.com/nbgallery/nbgallery-extensions/tree/master/jupyter_nbgallery/post_hack) is a workaround for browser issues with CORS pre-flight checks when PKI certificates are involved.  The Jupyter API enables notebooks to be uploaded via a `PUT` to `/api/contents/NotebookName.ipynb`; this extension enables uploads via a `POST` to `/post/NotebookName.ipynb` as well.  The "Run in Jupyter" button in nbgallery uses the `/post` endpoint, so this extension must be enabled to launch notebooks from nbgallery.
