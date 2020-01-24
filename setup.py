@@ -25,7 +25,7 @@ with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='jupyter-nbgallery',
-    version='1.0.1',
+    version='1.0.2',
     description='Jupyter extensions to add nbgallery integration',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -34,5 +34,11 @@ setup(
     author_email='rfestag@gmail.com',
     license='MIT',
     packages=find_packages(),
-    include_package_data=True
+    include_package_data=True,
+    install_requires=[
+        'notebook',
+    ],
+    entry_points={
+        'console_scripts': ['jupyter-nbgallery=jupyter_nbgallery.commands:main']
+    }
 )
