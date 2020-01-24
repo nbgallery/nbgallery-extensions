@@ -36,6 +36,12 @@ def configure(filename, args):
     else:
         config = {}
 
+    # Convert value from string if possible
+    try:
+        value = eval(args.value)
+    except:
+        value = args.value
+
     # Set key=value in nbgallery section of config.
     # Specify nesting via key1.key2.key3
     keys = args.key.split('.')
@@ -46,7 +52,7 @@ def configure(filename, args):
         if k not in nbg:
             nbg[k] = {}
         nbg = nbg[k]
-    nbg[keys[-1]] = args.value
+    nbg[keys[-1]] = value
 
     # Save config back to file
     with open(filename, 'w') as f:
