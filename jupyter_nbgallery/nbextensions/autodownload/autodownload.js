@@ -9,7 +9,7 @@ define([
   $,
   utils,
   configmod,
-  events,
+  events
 ) {
   var upload_notebook = function(folder, name, notebook) {
     // this SHOULD be a PUT to api/contents/NotebookName.ipynb, but since FireFox won't
