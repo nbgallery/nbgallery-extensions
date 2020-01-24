@@ -6,7 +6,7 @@ This package provides several Jupyter extensions to enable integration with [nbg
 
 # Installation
 
-This package contains both UI extensions (_nbextensions_) and server extensions.  Install the package with `pip`, then install the nbextensions with `jupyter`.  Depending on how you have Jupyter installed, you may want to add the `--sys-prefix` or `--user` options; see `jupyter nbextension install --help` for details.
+This package contains both UI extensions (_nbextensions_) and server extensions.  Install the package with `pip`, then install the nbextensions with `jupyter`.  Depending on how you have Jupyter installed, you may want to add the `--system`, `--sys-prefix`, or `--user` options; see `jupyter nbextension install --help` for details.
 
 ```
 pip install jupyter_nbgallery
@@ -38,11 +38,51 @@ jupyter nbextenstion enable --section notebook jupyter_nbgallery/instrumentation
 
 If you are using the [Jupyter Nbextensions Configurator](https://github.com/Jupyter-contrib/jupyter_nbextensions_configurator) extension, you can also toggle the nbextensions on and off from the configurator page.
 
-# Manual configuration
+# Jupyter configuration
 
-Once the extension is installed, you will also need to modify your Jupyter configuration.  The `nbconfig/common.json` must have an `nbgallery` section listing the URL of your nbgallery instance, and several options must be set in `jupyter_notebook_config.py` (or on the command line) to allow cross-site Javascript to work.  See [these instructions](https://github.com/nbgallery/nbgallery/blob/master/docs/jupyter_integration.md#manual-configuration) for details.
+Once the extension is installed, you will also need to modify your Jupyter configuration to interact with your nbgallery server.
 
-# Extensions
+First, your Jupyter instance needs to know about your nbgallery server in order to save notebooks, download preferences, etc.  This is configured in `nbconfig/common.json` underneath one of Jupyter's [configuration directories](https://jupyter.readthedocs.io/en/latest/projects/jupyter-directories.html#configuration-files).  You can use the included `jupyter nbgallery` script to set the location of your nbgallery, as well as the Jupyter client name that will appear in nbgallery's "Run in Jupyter" Environments page.
+
+```
+# Set nbgallery server location:
+# jupyter nbgallery [--user|--system|--sys-prefix] configure url <nbgallery server address>
+# Example:
+jupyter nbgallery --sys-prefix configure url http://localhost:3000
+
+# Set nbgallery environment client name
+# Example:
+jupyter nbgallery --sys-prefix configure client.name my-jupyter-instance
+```
+
+After configuration, `nbconfig/common.json` should look something like this (potentially with other unrelated sections):
+
+```
+{
+  "nbgallery": {
+    "url": "http://localhost:3000",
+    "client": {
+      "name": "my-jupyter-instance"
+    }
+  }
+}
+```
+
+Second, in order for nbgallery's "Run in Jupyter" button to work, Jupyter must be configured to allow cross-site AJAX.  **Note these are security-relevant configuration settings.**  These can be set in `jupyter_notebook_config.py`:
+
+```
+c.JupyterApp.allow_origin = <URL of your nbgallery instance>`
+c.JupyterApp.allow_credentials = True
+c.JupyterApp.disable_check_xsrf = True
+```
+
+These can also be set on the command line when launching Jupyter; for example:
+
+```
+jupyter notebook --JupyterApp.allow_origin='http://localhost:3000' --JupyterApp.allow_credentials=True --JupyterApp.disable_check_xsrf=True
+```
+
+# List of Extensions
 
 ## UI Extensions (nbextensions)
 
