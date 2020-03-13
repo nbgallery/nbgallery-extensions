@@ -259,6 +259,20 @@ define([
           });
         };
         
+        var update_gallery_metadata = function(response) {
+          if (!Jupyter.notebook.metadata.gallery) {
+            Jupyter.notebook.metadata.gallery = {}
+          }
+          Jupyter.notebook.metadata.gallery.commit = response.commit;
+          Jupyter.notebook.metadata.gallery.staging_id = response.staging_id;
+          Jupyter.notebook.metadata.gallery.filename = response.filename;
+          if (response.link) {
+            Jupyter.notebook.metadata.gallery.link = response.link;
+          } else {
+            Jupyter.notebook.metadata.gallery.clone = response.clone;
+          }
+        };
+
         var save_notebook = function() {
           bootbox.dialog({
             title: 'Saving ...',
@@ -276,7 +290,7 @@ define([
             data: JSON.stringify(strip_output(Jupyter.notebook)),
             success: function(response) {
               bootbox.hideAll();
-              Jupyter.notebook.metadata.gallery = response;
+              update_gallery_metadata(response);
               Jupyter.notebook.save_notebook();
               window.open(base + "/notebook/" + response.link +"?staged=" + response['staging_id'] + "#UPDATE", '_blank');
               Jupyter.notification_area.get_widget("notebook").set_message("Notebook saved", 3000);
@@ -537,7 +551,7 @@ define([
             data: JSON.stringify(strip_output(Jupyter.notebook)),
             success: function(response) {
               bootbox.hideAll();
-              Jupyter.notebook.metadata.gallery = response;
+              update_gallery_metadata(response);
               Jupyter.notebook.save_notebook();
               window.open(base + "/notebooks/?staged=" + response['staging_id'] +"#STAGE", '_blank');
               build_gallery_menu();
