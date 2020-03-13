@@ -26,14 +26,14 @@ To enable extensions independently (note that you need to specify the _section_ 
 
 ```
 # Minimal set
-jupyter nbextenstion enable --section common jupyter_nbgallery/environment/environment
-jupyter nbextenstion enable --section notebook jupyter_nbgallery/gallery_menu/gallery_menu
+jupyter nbextension enable --section common jupyter_nbgallery/environment/environment
+jupyter nbextension enable --section notebook jupyter_nbgallery/gallery_menu/gallery_menu
 jupyter serverextension enable jupyter_nbgallery.post_hack
 
 # Optional
-jupyter nbextenstion enable --section tree jupyter_nbgallery/autodownload/autodownload
-jupyter nbextenstion enable --section notebook jupyter_nbgallery/easy_buttons/easy_buttons
-jupyter nbextenstion enable --section notebook jupyter_nbgallery/instrumentation/instrumentation
+jupyter nbextension enable --section tree jupyter_nbgallery/autodownload/autodownload
+jupyter nbextension enable --section notebook jupyter_nbgallery/easy_buttons/easy_buttons
+jupyter nbextension enable --section notebook jupyter_nbgallery/instrumentation/instrumentation
 ```
 
 If you are using the [Jupyter Nbextensions Configurator](https://github.com/Jupyter-contrib/jupyter_nbextensions_configurator) extension, you can also toggle the nbextensions on and off from the configurator page.
