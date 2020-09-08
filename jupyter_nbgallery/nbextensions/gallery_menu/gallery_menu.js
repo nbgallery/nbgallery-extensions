@@ -16,7 +16,15 @@ define([
     config.load();
     
     config.loaded.then(function() {
+      // 'base' is the "home" nbgallery that's configured for this Jupyter instance
       base = config['data'].nbgallery.url;
+
+      // 'notebook_base' is the gallery this notebook was launched from
+      var gallery_metadata = Jupyter.notebook.metadata.gallery;
+      var notebook_base = base;
+      if (gallery_metadata && gallery_metadata.gallery_url) {
+        notebook_base = gallery_metadata.gallery_url;
+      }
   
       var gallery_menu = $('<li>').addClass('dropdown');
       var gallery_preferences_menu = $('<li>').addClass('dropdown');
@@ -165,6 +173,10 @@ define([
         var linked = metadata != undefined && metadata.link != undefined;
         var cloned = metadata != undefined && metadata.clone != undefined;
 
+        if ((linked || cloned) && (base != notebook_base)) {
+          links.append('<i>&nbsp;' + notebook_base + '</i>');
+        }
+
         if (linked && !cloned) {
           links.append('<a href="#" id="gallery_save">Save Changes to Gallery</a>');
           links.append('<a href="#" id="gallery_change_request">Submit Change Request</a>');
@@ -187,7 +199,7 @@ define([
           links.append('<a href="#" id="gallery_update">Check for changes</a>'); 
           links.append('<li class="divider">');
           
-          var href = base + "/notebooks/";
+          var href = notebook_base + "/notebooks/";
           
           if (linked)
             href += metadata.link;
@@ -196,6 +208,7 @@ define([
           
           links.append('<a href="' + href +'" target="_blank">Open in the Gallery</a>');
         } else {
+          // Not linked or cloned i.e. not attached to a Gallery
           links.append('<li class="divider">');
           links.append('<a href="' + base + '" target="_blank"><i class="fa fa-external-link menu-icon pull-right"></i>Visit the Gallery</a>');
         }
@@ -245,7 +258,7 @@ define([
         var fetch_error = function(id) {
           bootbox.dialog({
             title: 'Gallery Communication Error',
-            message: "There was an error fetching information for <b>" + id + "</b>. This can happen for a few reasons:<br><br><li style='margin-left:50px'><a target='_blank' href='" + base +"'>Notebook Gallery</a> is down</li><li style='margin-left:50px'>The remote notebook was deleted</li><li style='margin-left:50px'>The remote notebook was made private</li><li style='margin-left:50px'>Your permissions on the remote notebook changed</li><br>You can try waiting it out. If this error persists, we recommend unlinking the notebook and either re-linking or uploading a new copy.",
+            message: "There was an error fetching information for <b>" + id + "</b>. This can happen for a few reasons:<br><br><li style='margin-left:50px'><a target='_blank' href='" + notebook_base +"'>Notebook Gallery</a> is down</li><li style='margin-left:50px'>The remote notebook was deleted</li><li style='margin-left:50px'>The remote notebook was made private</li><li style='margin-left:50px'>Your permissions on the remote notebook changed</li><br>You can try waiting it out. If this error persists, we recommend unlinking the notebook and either re-linking or uploading a new copy.",
             buttons: {
               download: {
                 label: "Unlink",
@@ -281,7 +294,7 @@ define([
           
           $.ajax({
             method: 'POST', 
-            url: base + '/stages' + '?id=' + metadata.link + '&agree=yes',
+            url: notebook_base + '/stages' + '?id=' + metadata.link + '&agree=yes',
             dataType: 'json',
             contentType: 'text/plain',
             headers:{
@@ -292,7 +305,7 @@ define([
               bootbox.hideAll();
               update_gallery_metadata(response);
               Jupyter.notebook.save_notebook();
-              window.open(base + "/notebook/" + response.link +"?staged=" + response['staging_id'] + "#UPDATE", '_blank');
+              window.open(notebook_base + "/notebook/" + response.link +"?staged=" + response['staging_id'] + "#UPDATE", '_blank');
               Jupyter.notification_area.get_widget("notebook").set_message("Notebook saved", 3000);
             },
             error: function() {
@@ -315,7 +328,7 @@ define([
           }
           $.ajax({
             method: 'POST', 
-            url: base + '/stages?id=' + id + '&agree=yes',
+            url: notebook_base + '/stages?id=' + id + '&agree=yes',
             dataType: 'json',
             contentType: 'text/plain',
             headers:{
@@ -324,7 +337,7 @@ define([
             data: JSON.stringify(strip_output(Jupyter.notebook)),
             success: function(response) {
               bootbox.hideAll();
-              window.open(base + "/notebooks/" + id +"?staged=" + response['staging_id'] + "#CHANGE_REQ", '_blank'); 
+              window.open(notebook_base + "/notebooks/" + id +"?staged=" + response['staging_id'] + "#CHANGE_REQ", '_blank'); 
               Jupyter.notification_area.get_widget("notebook").set_message("Change Request Submitted", 3000);
             },
             error: function() {
@@ -346,7 +359,7 @@ define([
           var seconds = new Date().getTime() /1000;
           $.ajax({
             method: 'GET', 
-            url: base + '/notebooks/' + id + '/metadata?seconds=' + seconds,
+            url: notebook_base + '/notebooks/' + id + '/metadata?seconds=' + seconds,
             headers:{
                 Accept: 'application/json'
             },        
@@ -367,7 +380,7 @@ define([
                       
                      $.ajax({
                         method: 'POST', 
-                        url: base + '/notebooks/' + id + '/diff',
+                        url: notebook_base + '/notebooks/' + id + '/diff',
                         dataType: 'json',
                         contentType: 'text/plain',
                         headers:{
@@ -389,7 +402,7 @@ define([
                                 });
                                 
                                 $.ajax({
-                                  url: base + '/notebooks/' + id + '/download',
+                                  url: notebook_base + '/notebooks/' + id + '/download',
                                   error: function(e) {
                                     bootbox.hideAll();
                                     fetch_error(id);
@@ -440,7 +453,7 @@ define([
                       });
                       
                       $.ajax({
-                        url: base + '/notebooks/' + id + '/download',
+                        url: notebook_base + '/notebooks/' + id + '/download',
                         error: function() {
                           bootbox.hideAll();
                           fetch_error(id);
@@ -470,7 +483,7 @@ define([
           
                 bootbox.dialog({
                   title: 'Remote notebook changed',
-                  message: "The <a target='_blank' href='" + base + "/notebooks/" + id + "'>remote notebook</a> has changed since you checked it out. What would you like to do?",
+                  message: "The <a target='_blank' href='" + notebook_base + "/notebooks/" + id + "'>remote notebook</a> has changed since you checked it out. What would you like to do?",
                   buttons: buttons
                 });
               } else {
@@ -504,6 +517,9 @@ define([
           Jupyter.keyboard_manager.command_shortcuts.clear_shortcuts();
 
           bootbox.prompt('Enter notebook URL', function(nb_url) {
+            // Set notebook base from the new link url
+            var url = new URL(nb_url);
+            notebook_base = url.origin;
             Jupyter.keyboard_manager.command_shortcuts._shortcuts = shortcuts;
             var seconds = new Date().getTime() /1000;
             $.ajax({
@@ -513,10 +529,16 @@ define([
                 if (id != null) {
                   $.ajax({
                     method: 'GET', 
-                    url: base + '/notebooks/' + id.uuid + '/metadata?seconds=' + seconds, 
+                    url: notebook_base + '/notebooks/' + id.uuid + '/metadata?seconds=' + seconds, 
                     success: function(metadata) {
                       Jupyter.keyboard_manager.command_shortcuts._shortcuts = shortcuts;
-                      Jupyter.notebook.metadata.gallery = { link: id.uuid, commit:  metadata.commit_id}; // TODO: Add check to see if they can edit, that determines if it gets a link or clone id
+                      // Fill in Gallery metadata
+                      // TODO: Add check to see if they can edit, that determines if it gets a link or clone id
+                      Jupyter.notebook.metadata.gallery = { 
+                        gallery_url: notebook_base,
+                        link: id.uuid,
+                        commit:  metadata.commit_id
+                      };
                       Jupyter.notebook.save_notebook();
                       build_gallery_menu();
                       Jupyter.notification_area.get_widget("notebook").set_message("Notebook linked", 3000);
@@ -542,7 +564,7 @@ define([
 
           $.ajax({
             method: 'POST', 
-            url: base + '/stages?agree=yes',
+            url: notebook_base + '/stages?agree=yes',
             dataType: 'json',
             contentType: 'text/plain',
             headers:{
@@ -553,7 +575,7 @@ define([
               bootbox.hideAll();
               update_gallery_metadata(response);
               Jupyter.notebook.save_notebook();
-              window.open(base + "/notebooks/?staged=" + response['staging_id'] +"#STAGE", '_blank');
+              window.open(notebook_base + "/notebooks/?staged=" + response['staging_id'] +"#STAGE", '_blank');
               build_gallery_menu();
               Jupyter.notification_area.get_widget("notebook").set_message("Notebook uploaded", 3000);
             },

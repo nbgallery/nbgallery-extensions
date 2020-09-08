@@ -20,6 +20,7 @@ define([
         // Post the client name/url to the gallery as an environment
         config.loaded.then(function() {
             var nbgallery = config['data'].nbgallery;
+            // 'base' is the "home" nbgallery that's configured for this Jupyter instance
             var base = nbgallery.url;
 
             // Handle execution requests
@@ -55,11 +56,15 @@ define([
                 }
 
                 // Post to gallery
-                if (Jupyter.notebook.metadata.gallery != undefined) {
-                    log['uuid'] = 
-                        Jupyter.notebook.metadata.gallery.uuid ||
-                        Jupyter.notebook.metadata.gallery.link || 
-                        Jupyter.notebook.metadata.gallery.clone;
+                var gallery_metadata = Jupyter.notebook.metadata.gallery;
+                var notebook_base = base;
+                if (gallery_metadata) {
+                    log['uuid'] = gallery_metadata.uuid || gallery_metadata.link || gallery_metadata.clone;
+                    // If this notebook didn't come from the "home" gallery, send
+                    // the log to the gallery it was launched from.
+                    if (gallery_metadata.gallery_url) {
+                        notebook_base = gallery_metadata.gallery_url;
+                    }
                 }
                 console.log('finished_execute: ' + cell.toJSON().source.substr(0, 70) + '...');
                 console.log(log);
@@ -67,7 +72,7 @@ define([
                     $.ajax({
                         method: 'POST',
                         headers: { Accept: 'application/json' },
-                        url: base + "/executions",
+                        url: notebook_base + "/executions",
                         data: log,
                         xhrFields: { withCredentials: true }
                     });
