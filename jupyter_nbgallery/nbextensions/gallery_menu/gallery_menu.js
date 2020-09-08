@@ -249,6 +249,9 @@ define([
                 Jupyter.notebook.save_notebook();
               }
               
+              // Reset back to the home gallery
+              notebook_base = base;
+
               build_gallery_menu();
               Jupyter.notification_area.get_widget("notebook").set_message("Notebook unlinked", 3000);
             }
