@@ -17,15 +17,45 @@
 
 from setuptools import setup, find_packages
 
-# read the contents of your README file
-from os import path
-this_directory = path.abspath(path.dirname(__file__))
-with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
+# Use README as long_description
+import os
+this_directory = os.path.abspath(os.path.dirname(__file__))
+with open(os.path.join(this_directory, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
+
+data_files = []
+
+# Auto-install nbextensions
+for root, dirs, files in os.walk('jupyter_nbgallery/nbextensions'):
+    root_files = [os.path.join(root, i) for i in files]
+    if root_files:
+        install_root = root.replace('jupyter_nbgallery/nbextensions', 'share/jupyter/nbextensions/jupyter_nbgallery')
+        data_files.append((install_root, root_files))
+
+# Auto-enable server extensions and minimal set of nbextensions
+data_files += [
+    (
+        "etc/jupyter/nbconfig/common.d",
+        ["jupyter-config/nbconfig/common.d/jupyter_nbgallery.json"]
+    ),
+    (
+        "etc/jupyter/nbconfig/notebook.d",
+        ["jupyter-config/nbconfig/notebook.d/jupyter_nbgallery.json"]
+    ),
+    (
+        "etc/jupyter/jupyter_notebook_config.d",
+        ["jupyter-config/jupyter_notebook_config.d/jupyter_nbgallery.json"]
+    ),
+    (
+        "etc/jupyter/jupyter_server_config.d",
+        ["jupyter-config/jupyter_server_config.d/jupyter_nbgallery.json"]
+    ),
+]
+
 
 setup(
     name='jupyter-nbgallery',
-    version='1.1.1',
+    version='2.0.0',
     description='Jupyter extensions to add nbgallery integration',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -34,9 +64,10 @@ setup(
     author_email='rfestag@gmail.com',
     license='MIT',
     packages=find_packages(),
+    data_files=data_files,
     include_package_data=True,
     install_requires=[
-        'notebook',
+        'jupyter_server',
     ],
     entry_points={
         'console_scripts': ['jupyter-nbgallery=jupyter_nbgallery.commands:main']

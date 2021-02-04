@@ -1,2 +1,3 @@
 include README.md
 recursive-include jupyter_nbgallery/nbextensions *
+recursive-include jupyter-config *
