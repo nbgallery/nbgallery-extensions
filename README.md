@@ -6,34 +6,24 @@ This package provides several Jupyter extensions to enable integration with [nbg
 
 # Installation
 
-This package contains both UI extensions (_nbextensions_) and server extensions.  Install the package with `pip`, then install the nbextensions with `jupyter`.  Depending on how you have Jupyter installed, you may want to add the `--system`, `--sys-prefix`, or `--user` options; see `jupyter nbextension install --help` for details.
+This package contains both UI extensions (_nbextensions_) and server extensions.  To install with pip:
 
 ```
 pip install jupyter_nbgallery
-jupyter nbextension install --py jupyter_nbgallery
 ```
 
-Next, enable the extensions you want to use.  *At a minimum, you need the post_hack server extension and the gallery_menu and environment nbextensions to enable the two-way integration with nbgallery.*
+As of version 2.0, the minimal set of extensions required for nbgallery integration will be automatically installed and enabled.  This includes the `post_hack` server extension, the nbgallery environment registration UI extension, and the Gallery menu UI extension.  
 
-To enable all extensions:
-
-```
-jupyter serverextension enable --py jupyter_nbgallery
-jupyter nbextension enable --py jupyter_nbgallery
-```
-
-To enable extensions independently (note that you need to specify the _section_ for nbextensions):
+To enable the optional extensions:
 
 ```
-# Minimal set
-jupyter nbextension enable --section common jupyter_nbgallery/environment/environment
-jupyter nbextension enable --section notebook jupyter_nbgallery/gallery_menu/gallery_menu
-jupyter serverextension enable jupyter_nbgallery.post_hack
+# Enable all extensions
+jupyter nbextension enable --sys-prefix --py jupyter_nbgallery
 
-# Optional
-jupyter nbextension enable --section tree jupyter_nbgallery/autodownload/autodownload
-jupyter nbextension enable --section notebook jupyter_nbgallery/easy_buttons/easy_buttons
-jupyter nbextension enable --section notebook jupyter_nbgallery/instrumentation/instrumentation
+# Enable individual extensions
+jupyter nbextension enable --sys-prefix --section tree jupyter_nbgallery/autodownload/autodownload
+jupyter nbextension enable --sys-prefix --section notebook jupyter_nbgallery/easy_buttons/easy_buttons
+jupyter nbextension enable --sys-prefix --section notebook jupyter_nbgallery/instrumentation/instrumentation
 ```
 
 If you are using the [Jupyter Nbextensions Configurator](https://github.com/Jupyter-contrib/jupyter_nbextensions_configurator) extension, you can also toggle the nbextensions on and off from the configurator page.
@@ -71,16 +61,18 @@ After configuration, `nbconfig/common.json` should look something like this (pot
 Second, in order for nbgallery's "Run in Jupyter" button to work, Jupyter must be configured to allow cross-site AJAX.  **Note these are security-relevant configuration settings.**  These can be set in `jupyter_notebook_config.py`:
 
 ```
-c.JupyterApp.allow_origin = <URL of your nbgallery instance>`
-c.JupyterApp.allow_credentials = True
-c.JupyterApp.disable_check_xsrf = True
+c.NotebookApp.allow_origin = <URL of your nbgallery instance>`
+c.NotebookApp.allow_credentials = True
+c.NotebookApp.disable_check_xsrf = True
 ```
 
 These can also be set on the command line when launching Jupyter; for example:
 
 ```
-jupyter notebook --JupyterApp.allow_origin='http://localhost:3000' --JupyterApp.allow_credentials=True --JupyterApp.disable_check_xsrf=True
+jupyter notebook --NotebookApp.allow_origin='http://localhost:3000' --NotebookApp.allow_credentials=True --NotebookApp.disable_check_xsrf=True
 ```
+
+If you are launching `jupyter lab` instead of `jupyter notebook`, be aware that as of Lab 3.0, these are now `ServerApp` settings that can be set in `jupyter_server_config.py` (see the [migration guide](https://jupyter-server.readthedocs.io/en/stable/operators/migrate-from-nbserver.html)).
 
 # List of Extensions
 
