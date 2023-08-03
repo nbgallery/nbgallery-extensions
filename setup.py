@@ -42,20 +42,12 @@ data_files += [
         "etc/jupyter/nbconfig/notebook.d",
         ["jupyter-config/nbconfig/notebook.d/jupyter_nbgallery.json"]
     ),
-    (
-        "etc/jupyter/jupyter_notebook_config.d",
-        ["jupyter-config/jupyter_notebook_config.d/jupyter_nbgallery.json"]
-    ),
-    (
-        "etc/jupyter/jupyter_server_config.d",
-        ["jupyter-config/jupyter_server_config.d/jupyter_nbgallery.json"]
-    ),
 ]
 
 
 setup(
     name='jupyter-nbgallery',
-    version='2.0.0',
+    version='3.0.0',
     description='Jupyter extensions to add nbgallery integration',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -67,7 +59,8 @@ setup(
     data_files=data_files,
     include_package_data=True,
     install_requires=[
-        'jupyter_server',
+        'nbclassic',
+        'jupyterlab_nbgallery>=3.0.0'
     ],
     entry_points={
         'console_scripts': ['jupyter-nbgallery=jupyter_nbgallery.commands:main']
