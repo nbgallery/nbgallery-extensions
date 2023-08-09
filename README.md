@@ -6,7 +6,7 @@ This package provides several Jupyter extensions to enable integration with [nbg
 
 # Installation
 
-This package contains both UI extensions (_nbextensions_) and server extensions.  To install with pip:
+This package contains UI extensions (_nbextensions_) for NBClassic only.  The server extension was migrated to jupyterlab_nbgallery To install with pip:
 
 ```
 pip install jupyter_nbgallery
@@ -18,15 +18,13 @@ To enable the optional extensions:
 
 ```
 # Enable all extensions
-jupyter nbextension enable --sys-prefix --py jupyter_nbgallery
+jupyter nbclassic-extension enable --sys-prefix --py jupyter_nbgallery
 
 # Enable individual extensions
-jupyter nbextension enable --sys-prefix --section tree jupyter_nbgallery/autodownload/autodownload
-jupyter nbextension enable --sys-prefix --section notebook jupyter_nbgallery/easy_buttons/easy_buttons
-jupyter nbextension enable --sys-prefix --section notebook jupyter_nbgallery/instrumentation/instrumentation
+jupyter nbclassic-extension enable --sys-prefix --section tree jupyter_nbgallery/autodownload/autodownload
+jupyter nbclassic-extension enable --sys-prefix --section notebook jupyter_nbgallery/easy_buttons/easy_buttons
+jupyter nbclassic-extension enable --sys-prefix --section notebook jupyter_nbgallery/instrumentation/instrumentation
 ```
-
-If you are using the [Jupyter Nbextensions Configurator](https://github.com/Jupyter-contrib/jupyter_nbextensions_configurator) extension, you can also toggle the nbextensions on and off from the configurator page.
 
 # Jupyter configuration
 
@@ -89,6 +87,3 @@ If you are launching `jupyter lab` instead of `jupyter notebook`, be aware that 
  * [`easy_buttons`](https://github.com/nbgallery/nbgallery-extensions/blob/master/jupyter_nbgallery/nbextensions/easy_buttons/README.md) adds buttons to the active cell for commonly-used actions.
  * [`instrumentation`](https://github.com/nbgallery/nbgallery-extensions/blob/master/jupyter_nbgallery/nbextensions/instrumentation/README.md) reports cell execution status back to nbgallery for [notebook health assessment](https://nbgallery.github.io/health_paper.html).
 
-## Server Extensions
-
- * [`post_hack`](https://github.com/nbgallery/nbgallery-extensions/tree/master/jupyter_nbgallery/post_hack) is a workaround for browser issues with CORS pre-flight checks when PKI certificates are involved.  The Jupyter API enables notebooks to be uploaded via a `PUT` to `/api/contents/NotebookName.ipynb`; this extension enables uploads via a `POST` to `/post/NotebookName.ipynb` as well.  The "Run in Jupyter" button in nbgallery uses the `/post` endpoint, so this extension must be enabled to launch notebooks from nbgallery.

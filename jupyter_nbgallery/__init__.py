@@ -31,8 +31,3 @@ def _jupyter_nbextension_paths():
             'require' : 'jupyter_nbgallery/easy_buttons/easy_buttons',
         },
     ]
-
-def _jupyter_server_extension_paths():  
-    return [
-        {'module': 'jupyter_nbgallery.post_hack'},
-    ]
