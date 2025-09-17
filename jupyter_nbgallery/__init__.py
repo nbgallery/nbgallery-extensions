@@ -1,3 +1,6 @@
+def _jupyter_server_extension_points():
+    return [{"module": "jupyter_nbgallery"}]
+
 def _jupyter_nbextension_paths():
     return [
         {
