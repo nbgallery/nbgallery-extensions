@@ -47,7 +47,7 @@ data_files += [
 
 setup(
     name='jupyter-nbgallery',
-    version='3.0.0',
+    version='3.0.1',
     description='Jupyter extensions to add nbgallery integration',
     long_description=long_description,
     long_description_content_type='text/markdown',
